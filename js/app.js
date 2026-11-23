@@ -1871,36 +1871,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("quick-action-notes").addEventListener("click", () => {
     showInteractiveModal("Catatan Saya 📝", `
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="background: var(--bg-card-subtle); padding: 10px 12px; border-radius: var(--radius-md);">
-          <div style="font-weight: 700; font-size: 13px;">📌 Teorema Pythagoras (Matematika):</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">c² = a² + b² (kuadrat sisi miring sama dengan jumlah kuadrat sisi tegak segitiga siku-siku).</div>
-        </div>
-        <div style="background: var(--bg-card-subtle); padding: 10px 12px; border-radius: var(--radius-md);">
-          <div style="font-weight: 700; font-size: 13px;">📌 Komponen Darah Manusia (IPA):</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Eritrosit (sel darah merah) mengikat oksigen, Leukosit (sel darah putih) membasmi kuman, Trombosit membekukan darah saat luka.</div>
-        </div>
+      <div style="text-align: center; padding: 32px 16px; color: var(--text-muted); background: var(--bg-card-subtle); border-radius: var(--radius-lg); border: 1.5px dashed var(--border-color);">
+        <div style="font-size: 38px; margin-bottom: 8px;">📝</div>
+        <h4 style="font-weight: 700; font-size: 14.5px; color: var(--text-main); margin-bottom: 4px;">Catatan Saya Kosong</h4>
+        <p style="font-size: 12.5px; line-height: 1.5;">Belum ada catatan belajar tersimpan. Semua catatan sebelumnya telah dibersihkan.</p>
       </div>
     `);
   });
 
   document.getElementById("quick-action-forum").addEventListener("click", () => {
     showInteractiveModal("Diskusi Kelas 9B 👥", `
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="background: var(--bg-card-subtle); padding: 10px 12px; border-radius: var(--radius-md);">
-          <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-            <span>Rian Pratama</span>
-            <span style="font-weight: normal; color: var(--text-muted);">15m lalu</span>
-          </div>
-          <p style="font-size: 12.5px; margin-top: 4px;">Ada yang sudah selesai praktikum IPA uji amilum pada daun?</p>
-        </div>
-        <div style="background: var(--bg-card-subtle); padding: 10px 12px; border-radius: var(--radius-md);">
-          <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-            <span>Siti Aisyah</span>
-            <span style="font-weight: normal; color: var(--text-muted);">5m lalu</span>
-          </div>
-          <p style="font-size: 12.5px; margin-top: 4px;">Sudah, bagian daun yang ditutup aluminium foil tidak berubah jadi biru kehitaman karena tidak terjadi fotosintesis!</p>
-        </div>
+      <div style="text-align: center; padding: 32px 16px; color: var(--text-muted); background: var(--bg-card-subtle); border-radius: var(--radius-lg); border: 1.5px dashed var(--border-color);">
+        <div style="font-size: 38px; margin-bottom: 8px;">💬</div>
+        <h4 style="font-weight: 700; font-size: 14.5px; color: var(--text-main); margin-bottom: 4px;">Diskusi Kelas Kosong</h4>
+        <p style="font-size: 12.5px; line-height: 1.5;">Belum ada percakapan di forum Diskusi Kelas 9B. Semua diskusi sebelumnya telah dibersihkan.</p>
       </div>
     `);
   });
