@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EduSmart - Aplikasi Belajar Siswa</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+
+  <!-- Desktop Controls Toolbar (Simulator Handphone) -->
+  <div class="device-stage-controls">
+    <div class="device-badge-info">
+      <span class="device-dot-live"></span>
+      <span>📱 Mode Smartphone</span>
+    </div>
+    <div class="scale-buttons-wrap">
+      <span style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-right: 2px;">Skala:</span>
+      <button class="scale-toggle-btn active" data-scale="1">100%</button>
+      <button class="scale-toggle-btn" data-scale="0.88">88%</button>
+      <button class="scale-toggle-btn" data-scale="0.78">78%</button>
+      <button class="scale-toggle-btn" id="btn-toggle-fullscreen" title="Layar Penuh">⛶ Full</button>
+    </div>
+  </div>
+
+  <!-- Physical Smartphone Hardware Chassis (Bodi Handphone Otentik) -->
+  <div class="smartphone-frame" id="smartphone-frame">
+    <!-- Tombol Fisik Samping (Hardware Buttons) -->
+    <div class="phone-btn-silent" title="Action / Silent Button"></div>
+    <div class="phone-btn-vol-up" title="Volume Up"></div>
+    <div class="phone-btn-vol-down" title="Volume Down"></div>
+    <div class="phone-btn-power" title="Power Button"></div>
+
+    <!-- Inner Smartphone Screen -->
+    <div class="smartphone-screen">
+      <!-- Glass Glare Reflection Sheen -->
+      <div class="phone-screen-glare"></div>
+
+      <!-- Main Mobile App Shell -->
+      <div class="app-wrapper">
+        
+        <!-- Phone Status Bar with Dynamic Island -->
+        <div class="phone-notch-bar">
+          <!-- Left: Live Clock & Carrier -->
+          <div class="notch-left-group">
+            <span id="current-time">09:41</span>
+            <span class="carrier-badge">5G</span>
+          </div>
+
+          <!-- Center: Dynamic Island Pill -->
+          <div class="dynamic-island-pill" id="dynamic-island" title="Dynamic Island">
+            <div class="dynamic-island-sensor"></div>
+            <div class="dynamic-island-camera"></div>
+          </div>
+
+          <!-- Right: Status Icons & Battery -->
+          <div class="notch-icons">
+            <svg class="notch-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2 17h2v4H2v-4zm4-5h2v9H6v-9zm4-4h2v13h-2V8zm4-4h2v17h-2V4zm4-2h2v19h-2V2z"/>
+            </svg>
+            <svg class="notch-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.5 0 6.69 1.4 9.02 3.68L12 18.7 2.98 11.18C5.31 8.9 8.5 7.5 12 7.5z"/>
+            </svg>
+            <div class="battery-indicator-wrap" title="Baterai 98%">
+              <div class="battery-body">
+                <div class="battery-fill"></div>
+              </div>
+              <div class="battery-cap"></div>
+            </div>
+          </div>
+        </div>
+
+    <!-- ==========================================================
+         TOP HEADER (Sesuai Wireframe: Profil User, Notifikasi, Menu)
+         ========================================================== -->
+    <header class="app-header">
+      <div class="header-top-row">
+        <!-- Profil User (Kiri) -->
+        <div class="user-profile-badge" id="btn-open-profile-from-header" title="Buka Profil">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="user-avatar" id="header-avatar">
+          <span class="user-name-display" id="header-user-name">Ahmad Rayhan</span>
+        </div>
+
+        <!-- Aksi Kanan: Notifikasi & Menu -->
+        <div class="header-actions">
+          <!-- Tombol Notifikasi -->
+          <button class="icon-btn" id="btn-notification" title="Notifikasi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="badge-dot" id="notif-badge"></span>
+          </button>
+
+          <!-- Tombol Menu Hamburger -->
+          <button class="icon-btn" id="btn-menu" title="Menu Aplikasi">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sapaan & Sub-info (Halo, {Nama user} | Kelas: {kelas} | Detail lain) -->
+      <div class="user-greeting-section">
+        <h1 class="greeting-title">
+          <span id="greeting-greeting-text">Halo</span>, <span id="greeting-name">Ahmad Rayhan</span> 👋
+        </h1>
+        <div class="greeting-subinfo">
+          <span class="info-separator">|</span>
+          <span>Kelas: <strong class="info-pill" id="greeting-kelas">9B</strong></span>
+          <span class="info-separator">|</span>
+          <span id="greeting-detail-lain">Semester Ganjil 2024/2025</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==========================================================
+         SCROLLABLE CONTENT VIEWS
+         ========================================================== -->
+    <main class="app-content">
+
+      <!-- VIEW 1: BERANDA / HOME (Tampilan Utama Sesuai Wireframe) -->
+      <section class="view-screen active-view" id="view-home">
+
+        <!-- 1. QUOTES CARD (Albert Einstein) -->
+        <article class="quote-card">
+          <div class="quote-header">
+            <span class="quote-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              Inspirasi Hari Ini
+            </span>
+            <button class="quote-refresh-btn" id="btn-refresh-quote" title="Ganti Kutipan">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </button>
+          </div>
+          <p class="quote-text" id="quote-text-display">"A person who never made a mistake never tried anything new."</p>
+          <span class="quote-author" id="quote-author-display">— Albert Einstein</span>
+        </article>
+
+        <!-- ======================================================
+             2. IMPROVISASI BAGIAN TENGAH (Sesuai Izin Pengguna)
+             ====================================================== -->
+        
+        <!-- A. Daily Learning Streak & Stats -->
+        <div class="learning-stats-grid">
+          <div class="stat-chip clickable-chip" id="btn-open-streak-hub" title="Buka Runtunan Belajar (Streak Hub)">
+            <div class="stat-chip-header">
+              <span class="streak-flame-icon">🔥</span> Streak
+            </div>
+            <div class="stat-chip-value" id="stat-streak-value">5 Hari</div>
+            <div class="stat-chip-sub" id="stat-streak-sub">Aktif terus!</div>
+          </div>
+
+          <div class="stat-chip">
+            <div class="stat-chip-header">
+              <span>🎯</span> Target
+            </div>
+            <div class="stat-chip-value" id="stat-target-value">75%</div>
+            <div class="stat-chip-sub">3/4 Selesai</div>
+          </div>
+
+          <div class="stat-chip">
+            <div class="stat-chip-header">
+              <span>⏱️</span> Belajar
+            </div>
+            <div class="stat-chip-value" id="stat-time-value">1j 45m</div>
+            <div class="stat-chip-sub">+25m dr kemarin</div>
+          </div>
+        </div>
+
+        <!-- Weekly Streak Tracker Mini-Widget -->
+        <div class="weekly-streak-widget" id="weekly-streak-widget" title="Buka Runtunan Belajar (Streak Hub)">
+          <div class="weekly-streak-top">
+            <div class="weekly-streak-info">
+              <span class="flame-animated">🔥</span>
+              <span><strong>Runtunan Belajar:</strong> <span id="weekly-streak-status-text">5 Hari Konsisten</span></span>
+            </div>
+            <span class="weekly-streak-badge" id="weekly-today-pill">Hari ini Aktif ✓</span>
+          </div>
+          <div class="weekly-days-row" id="weekly-days-row">
+            <!-- Render dinamis: Sen, Sel, Rab, Kam, Jum, Sab, Min -->
+          </div>
+        </div>
+
+        <!-- B. Card Lanjutkan Belajar (Continue Learning) -->
+        <div class="continue-learning-card" id="btn-continue-learning" style="cursor: pointer;">
+          <div class="continue-top">
+            <span class="continue-tag">Lanjutkan Belajar</span>
+            <span class="continue-duration">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              18 Menit Baca
+            </span>
+          </div>
+          <h2 class="continue-title">Matematika Kelas IX</h2>
+          <p class="continue-sub">Bab 2: Persamaan & Fungsi Kuadrat</p>
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 68%;"></div>
+            </div>
+            <div class="progress-bar-labels">
+              <span>Progress Modul</span>
+              <span>68% (4/6 Bab)</span>
+            </div>
+          </div>
+          <button class="continue-btn">
+            Buka Modul Pembelajaran
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </button>
+        </div>
+
+        <!-- C. Quick Action Pills -->
+        <div class="quick-actions-bar">
+          <button class="quick-pill" id="quick-action-quiz">
+            <span>⚡</span> Kuis Kilat
+          </button>
+          <button class="quick-pill" id="quick-action-ai">
+            <span>🤖</span> Tanya AI Tutor
+          </button>
+          <button class="quick-pill" id="quick-action-notes">
+            <span>📝</span> Catatan Saya
+          </button>
+          <button class="quick-pill" id="quick-action-forum">
+            <span>👥</span> Diskusi Kelas
+          </button>
+        </div>
+
+        <!-- D. Pengingat Deadline Terdekat (Kondisi Bersih / Kosong) -->
+        <div class="deadline-reminder-card" id="btn-open-urgent-task" style="border-left-color: var(--success); background: var(--bg-card);">
+          <div class="reminder-left">
+            <span class="reminder-icon">🎉</span>
+            <div>
+              <div class="reminder-title" style="color: var(--success);">Tidak Ada Tugas Aktif</div>
+              <div class="reminder-sub" style="color: var(--text-muted);">Semua tugas telah dibersihkan / kosong</div>
+            </div>
+          </div>
+          <button class="reminder-btn" style="color: var(--success); border-color: var(--success);">Cek</button>
+        </div>
+
+        <!-- ======================================================
+             3. CARD MAPEL YANG DIPELAJARI (Sesuai Wireframe)
+             ====================================================== -->
+        <section class="subjects-section-card">
+          <div class="subjects-header">
+            <h2 class="subjects-title">Mapel yang dipelajari</h2>
+            <button class="btn-mapel-lain" id="btn-open-mapel-lain">
+              Mapel lain
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 9 Grid Mapel: Matematika, IPA, IPS, PAI, Seni Budaya, Bahasa Arab, Bahasa Inggris, Bahasa Indonesia, Bahasa Sunda -->
+          <div class="subjects-grid" id="subjects-grid-container">
+            <!-- Di-render dinamis oleh JavaScript -->
+          </div>
+        </section>
+
+      </section>
+
+      <!-- VIEW 2: TUGAS (ADL - AKTIVITAS DAFTAR TUGAS) -->
+      <section class="view-screen" id="view-tugas">
+        <div class="view-header">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+            <h2 class="view-page-title">Aktivitas & Daftar Tugas</h2>
+            <span class="info-pill" style="background: var(--primary); color: #fff; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 99px;">Kelas 9B</span>
+          </div>
+          <p class="view-page-subtitle">Tugas mandiri, PR, dan latihan kuis harian siswa Kelas 9B</p>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="task-filter-chips">
+          <button class="filter-chip active" data-filter="semua">Semua (<span id="count-semua">0</span>)</button>
+          <button class="filter-chip" data-filter="belum">Belum Selesai (<span id="count-belum">0</span>)</button>
+          <button class="filter-chip" data-filter="dinilai">Dinilai (<span id="count-dinilai">0</span>)</button>
+          <button class="filter-chip" data-filter="selesai">Selesai (<span id="count-selesai">0</span>)</button>
+        </div>
+
+        <!-- Task List Container -->
+        <div class="task-list-container" id="tasks-list-container" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Di-render dinamis oleh JS -->
+        </div>
+      </section>
+
+      <!-- VIEW 3: JADWAL MAPEL -->
+      <section class="view-screen" id="view-jadwal">
+        <div class="view-header">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+            <h2 class="view-page-title">Jadwal Pelajaran</h2>
+            <span class="info-pill" style="background: var(--primary); color: #fff; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 99px;">Kelas 9B</span>
+          </div>
+          <p class="view-page-subtitle">Kalender waktu & mata pelajaran mingguan Kelas 9B</p>
+        </div>
+
+        <!-- Day Selector Pills (Senin - Jumat) -->
+        <div class="day-selector-pills" id="schedule-days-container">
+          <button class="day-pill active" data-day="Senin">Senin</button>
+          <button class="day-pill" data-day="Selasa">Selasa</button>
+          <button class="day-pill" data-day="Rabu">Rabu</button>
+          <button class="day-pill" data-day="Kamis">Kamis</button>
+          <button class="day-pill" data-day="Jumat">Jumat</button>
+        </div>
+
+        <!-- Schedule Items -->
+        <div class="schedule-list" id="schedule-items-container">
+          <!-- Di-render dinamis oleh JS -->
+        </div>
+      </section>
+
+      <!-- VIEW 4: PROFIL PENGGUNA -->
+      <section class="view-screen" id="view-profil">
+        <div class="profile-card-main">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="profile-avatar-large" id="profile-avatar-img">
+          <h2 class="profile-fullname" id="profile-name">Ahmad Rayhan</h2>
+          <span class="profile-class-badge" id="profile-badge-class">9B</span>
+          <p class="profile-school" id="profile-school-name">SMP Negeri 1 Prestasi Bangsa</p>
+
+          <div class="profile-stats-row">
+            <div class="profile-stat-box">
+              <span class="profile-stat-num" id="profile-stat-points">1,240</span>
+              <span class="profile-stat-label">Poin Belajar</span>
+            </div>
+            <div class="profile-stat-box">
+              <span class="profile-stat-num" id="profile-stat-rank">#3</span>
+              <span class="profile-stat-label">Ranking Kelas</span>
+            </div>
+            <div class="profile-stat-box clickable-chip" id="btn-open-streak-profile" title="Buka Runtunan Belajar (Streak Hub)" style="cursor: pointer;">
+              <span class="profile-stat-num" id="profile-stat-streak">5 Hari</span>
+              <span class="profile-stat-label">Streak 🔥</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 10px;">Lencana Prestasi (Badges)</h3>
+          <div class="badges-container" id="badges-container">
+            <!-- Render dinamis -->
+          </div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px;">
+          <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;">Informasi Akademik</h3>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">NISN</span>
+              <strong id="info-nisn">0068943211</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Email Siswa</span>
+              <strong id="info-email">rayhan.ahmad@belajar.sch.id</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">No. Telepon / WA</span>
+              <strong id="info-phone">0812-3456-7890</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================================
+         4. BOTTOM NAVIGATION BAR (Sesuai Wireframe)
+         4 Tab: Home (Beranda), Tugas (ADL), Jadwal Mapel, Profil
+         ========================================================== -->
+    <nav class="bottom-nav-bar">
+      <!-- Tab 1: Home (Beranda) -->
+      <button class="nav-item-btn active" data-target="view-home">
+        <div class="nav-icon-container">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <span class="nav-label">Home</span>
+      </button>
+
+      <!-- Tab 2: Tugas (ADL) -->
+      <button class="nav-item-btn" data-target="view-tugas">
+        <div class="nav-icon-container">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <span class="nav-label">Tugas (ADL)</span>
+      </button>
+
+      <!-- Tab 3: Jadwal Mapel -->
+      <button class="nav-item-btn" data-target="view-jadwal">
+        <div class="nav-icon-container">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <span class="nav-label">Jadwal Mapel</span>
+      </button>
+
+      <!-- Tab 4: Profil -->
+      <button class="nav-item-btn" data-target="view-profil">
+        <div class="nav-icon-container">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="nav-label">Profil</span>
+      </button>
+    </nav>
+
+    <!-- Home Indicator Swipe Bar (Garis Bawah Khas Handphone Modern) -->
+    <div class="phone-home-indicator-bar">
+      <div class="phone-home-pill"></div>
+    </div>
+
+  <!-- ==========================================================
+       MODAL 1: NOTIFIKASI DRAWER
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-notifikasi">
+    <div class="modal-sheet">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <h3 class="modal-title">Pusat Notifikasi</h3>
+        <button class="modal-close-btn" data-close="modal-notifikasi">✕</button>
+      </div>
+      <div id="notification-list-container" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Render dinamis -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 2: SIDEBAR MENU DRAWER (Hamburger)
+       ========================================================== -->
+  <div class="sidebar-overlay" id="sidebar-menu">
+    <div class="sidebar-panel">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="font-size: 18px; font-weight: 800;">Pengaturan & Menu</h3>
+          <button class="modal-close-btn" id="btn-close-sidebar">✕</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-card-subtle); border-radius: var(--radius-md);">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" style="width: 44px; height: 44px; border-radius: 50%;">
+          <div>
+            <div style="font-weight: 700; font-size: 14px;">Ahmad Rayhan</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Siswa Aktif • Kelas 9B SMP</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu-list">
+          <div class="sidebar-item" id="btn-toggle-theme">
+            <span>🌓</span>
+            <span style="flex: 1;">Mode Gelap / Terang</span>
+            <span style="font-size: 11px; color: var(--primary); font-weight: 700;" id="theme-status-text">Light</span>
+          </div>
+          <div class="sidebar-item" id="btn-menu-offline">
+            <span>📥</span>
+            <span>Materi Terunduh (Offline)</span>
+          </div>
+          <div class="sidebar-item" id="btn-menu-grade">
+            <span>📊</span>
+            <span>Rapor Nilai Semester</span>
+          </div>
+          <div class="sidebar-item" id="btn-menu-help">
+            <span>❓</span>
+            <span>Bantuan & Panduan Siswa</span>
+          </div>
+          <div class="sidebar-item" id="btn-menu-about">
+            <span>ℹ️</span>
+            <span>Tentang Aplikasi Belajar</span>
+          </div>
+        </nav>
+      </div>
+
+      <div>
+        <div class="sidebar-item danger" id="btn-logout">
+          <span>🚪</span>
+          <span>Keluar Akun</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 3: MAPEL LAIN KATALOG
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-mapel-lain">
+    <div class="modal-sheet">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <h3 class="modal-title">Semua Mata Pelajaran</h3>
+        <button class="modal-close-btn" data-close="modal-mapel-lain">✕</button>
+      </div>
+      <div style="margin-bottom: 8px;">
+        <input type="text" id="search-mapel-input" placeholder="🔍 Cari mata pelajaran..." style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 13px; background: var(--bg-app); color: var(--text-main); outline: none;">
+      </div>
+      <div id="all-subjects-list" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Render dinamis -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 4: DETAIL MATERI MAPEL (Silabus & Bab)
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-detail-mapel">
+    <div class="modal-sheet">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="modal-mapel-icon" style="font-size: 24px;">📐</div>
+          <div>
+            <h3 class="modal-title" id="modal-mapel-nama">Matematika</h3>
+            <p style="font-size: 11px; color: var(--text-muted);" id="modal-mapel-sub">Aljabar & Kalkulus</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" data-close="modal-detail-mapel">✕</button>
+      </div>
+
+      <div style="background: var(--primary-bg); padding: 12px 14px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 11px; color: var(--primary); font-weight: 700;">PROGRES KELAS</div>
+          <div style="font-size: 14px; font-weight: 800; color: var(--primary-dark);" id="modal-mapel-progress-text">68% Selesai</div>
+        </div>
+        <button style="background: var(--primary); color: #fff; border: none; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: var(--radius-full); cursor: pointer;" id="modal-btn-ujian">Ikuti Kuis Bab</button>
+      </div>
+
+      <div>
+        <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 8px;">Daftar Bab & Modul Pembelajaran</h4>
+        <div class="chapter-list" id="modal-chapter-list">
+          <!-- Render dinamis -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 5: INTERAKTIF AI TUTOR
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-interactive">
+    <div class="modal-sheet">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <h3 class="modal-title" id="interactive-title">Tanya AI Tutor</h3>
+        <button class="modal-close-btn" data-close="modal-interactive">✕</button>
+      </div>
+      <div id="interactive-content" style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;">
+        <!-- Konten interaktif diisi dinamis -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       TAMPILAN KHUSUS KUIS TERSENDIRI (STANDALONE QUIZ SCREEN)
+       Menggantikan modal pop-up agar menjadi layar ujian penuh
+       ========================================================== -->
+  <div class="quiz-standalone-screen" id="quiz-standalone-screen">
+    <!-- Quiz Top App Bar (Header Kuis Khusus) -->
+    <div class="quiz-app-bar">
+      <button class="quiz-bar-back-btn" id="btn-quiz-exit" title="Keluar dari Kuis">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
+      <div class="quiz-bar-center">
+        <div class="quiz-bar-badge" id="quiz-screen-badge">
+          <span id="quiz-screen-badge-icon">📐</span>
+          <span id="quiz-screen-mapel-text">Matematika</span>
+        </div>
+        <div class="quiz-bar-title" id="quiz-screen-title">Kuis Latihan Matematika SMP</div>
+      </div>
+
+      <div class="quiz-bar-timer" id="quiz-screen-timer-wrap">
+        <span class="timer-dot"></span>
+        <span id="quiz-timer-display">00:00</span>
+      </div>
+    </div>
+
+    <!-- Progress Track & Info Langkah Soal -->
+    <div class="quiz-progress-section" id="quiz-progress-section">
+      <div class="quiz-progress-meta">
+        <span class="quiz-progress-step" id="quiz-step-text">Soal 1 dari 10</span>
+        <span class="quiz-progress-topic" id="quiz-topic-text">Persamaan Kuadrat</span>
+      </div>
+      <div class="quiz-progress-track">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 10%;"></div>
+      </div>
+    </div>
+
+    <!-- Area Konten Utama Soal Kuis (Scrollable) -->
+    <div class="quiz-screen-content" id="quiz-content-area">
+      <!-- Di-render dinamis oleh app.js -->
+    </div>
+
+    <!-- Fixed Bottom Action Bar Kuis -->
+    <div class="quiz-screen-footer" id="quiz-screen-footer">
+      <div class="quiz-footer-status" id="quiz-footer-status">
+        <span class="footer-status-icon">💡</span>
+        <span id="quiz-footer-status-text">Pilih salah satu jawaban yang benar</span>
+      </div>
+      <button class="quiz-footer-btn" id="btn-quiz-next-action" disabled>
+        Lanjut ▶
+      </button>
+    </div>
+
+    <!-- Home Indicator Bar Khusus Layar Kuis -->
+    <div class="phone-home-indicator-bar" style="background: var(--bg-card); border-top: none;">
+      <div class="phone-home-pill"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       TAMPILAN KHUSUS MODUL PEMBELAJARAN (STANDALONE MODULE READER)
+       Pengalaman membaca modul belajar interaktif sesuai kurikulum
+       ========================================================== -->
+  <div class="module-reader-screen" id="module-reader-screen">
+    <!-- Module Top App Bar -->
+    <div class="module-app-bar">
+      <button class="module-bar-back-btn" id="btn-module-back" title="Kembali ke Daftar Bab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
+      <div class="module-bar-center">
+        <div class="module-bar-badge" id="module-screen-badge">
+          <span id="module-screen-badge-icon">📐</span>
+          <span id="module-screen-mapel-text">Matematika • Kelas IX</span>
+        </div>
+        <div class="module-bar-title" id="module-screen-title">Bab 1: Perpangkatan & Bentuk Akar</div>
+      </div>
+
+      <button class="streak-circle-close-btn" id="btn-module-close" title="Tutup Modul" aria-label="Tutup" style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Sub-Header Meta Info (Estimasi waktu, Kurikulum, Status Selesai) -->
+    <div class="module-meta-bar">
+      <div class="module-meta-tag">
+        <span class="meta-icon">⏱️</span>
+        <span id="module-meta-duration">15 Menit Baca</span>
+      </div>
+      <div class="module-meta-tag kurikulum">
+        <span class="meta-icon">🏛️</span>
+        <span>Kurikulum Merdeka</span>
+      </div>
+      <div class="module-meta-tag status" id="module-meta-status">
+        <span class="meta-icon" id="module-meta-status-icon">⚪</span>
+        <span id="module-meta-status-text">Sedang Dipelajari</span>
+      </div>
+    </div>
+
+    <!-- Segmented Navigation Tabs -->
+    <div class="module-nav-tabs">
+      <button class="module-nav-tab active" data-moduletab="konsep">
+        📘 Konsep & Rumus
+      </button>
+      <button class="module-nav-tab" data-moduletab="contoh">
+        💡 Contoh Soal
+      </button>
+      <button class="module-nav-tab" data-moduletab="latihan">
+        ✍️ Cek Pemahaman
+      </button>
+    </div>
+
+    <!-- Scrollable Module Content Area -->
+    <div class="module-reader-content" id="module-reader-content">
+      <!-- Di-render dinamis oleh app.js -->
+    </div>
+
+    <!-- Module Screen Footer Actions -->
+    <div class="module-screen-footer">
+      <button class="module-footer-action-btn complete-btn" id="btn-mark-module-complete">
+        <span id="module-complete-icon">✅</span>
+        <span id="module-complete-text">Tandai Selesai (+20 Poin)</span>
+      </button>
+      <button class="module-footer-action-btn quiz-btn" id="btn-goto-module-quiz">
+        <span>Lanjut ke Kuis ➔</span>
+      </button>
+    </div>
+
+    <!-- Home Indicator Bar Khusus Layar Modul -->
+    <div class="phone-home-indicator-bar" style="background: var(--bg-card); border-top: none;">
+      <div class="phone-home-pill"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       TAMPILAN KHUSUS AI TUTOR (STANDALONE SOCRATIC AI TUTOR)
+       Bimbingan belajar langkah demi langkah tanpa langsung membocorkan jawaban
+       ========================================================== -->
+  <div class="ai-tutor-screen" id="ai-tutor-screen">
+    <!-- AI Tutor Top App Bar -->
+    <div class="ai-tutor-app-bar">
+      <button class="ai-tutor-bar-back-btn" id="btn-ai-tutor-back" title="Kembali ke Beranda">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
+      <div class="ai-tutor-bar-center">
+        <div class="ai-tutor-bar-badge">
+          <span class="ai-pulse-dot"></span>
+          <span>AI Tutor Sokratik • Kelas 9B</span>
+        </div>
+        <div class="ai-tutor-bar-title">Tutor Pembimbing Langkah demi Langkah</div>
+      </div>
+
+      <button class="streak-circle-close-btn" id="btn-ai-tutor-reset" title="Mulai Sesi Baru" aria-label="Reset Chat" style="width: 36px; height: 36px; min-width: 36px; min-height: 36px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- AI Mode Banner -->
+    <div class="ai-mode-banner">
+      <span style="font-size: 16px;">💡</span>
+      <div style="flex: 1; font-size: 11.5px; line-height: 1.45;">
+        <strong>Metode Bimbingan Bertahap:</strong> AI akan membimbing konsep & langkah pengerjaan tanpa langsung memberikan jawaban akhir agar kamu benar-benar paham.
+      </div>
+    </div>
+
+    <!-- Quick Suggestion Chips (Horizontal Scroll) -->
+    <div class="ai-quick-chips-wrapper">
+      <div class="ai-quick-chips" id="ai-quick-chips">
+        <button class="ai-chip-btn" data-query="Bagaimana cara menyelesaikan persamaan kuadrat x² - 5x + 6 = 0?">
+          📐 Akar Kuadrat x² - 5x + 6 = 0
+        </button>
+        <button class="ai-chip-btn" data-query="Bagaimana langkah menentukan golongan darah donor dan resipien pada manusia?">
+          🔬 Golongan Darah & Jantung (IPA)
+        </button>
+        <button class="ai-chip-btn" data-query="Sebuah pohon 6 m bayangannya 4 m, berapa tinggi tiang jika bayangannya 10 m?">
+          📐 Hitung Tinggi Bayangan (Kesebangunan)
+        </button>
+        <button class="ai-chip-btn" data-query="Bagaimana cara menyederhanakan bentuk akar √72 + √50 - √18?">
+          📐 Operasi Bentuk Akar √72 + √50 - √18
+        </button>
+        <button class="ai-chip-btn" data-query="Jelaskan kaidah penyusunan generic structure Procedure Text bahasa Inggris!">
+          🌏 Kaidah Procedure Text (B. Inggris)
+        </button>
+        <button class="ai-chip-btn" data-query="Bagaimana cara membaca jam (as-sa'ah) dalam bahasa Arab?">
+          📜 Jam & Waktu Bahasa Arab
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Chat Messages Area -->
+    <div class="ai-tutor-messages-area" id="ai-tutor-messages-area">
+      <!-- Di-render dinamis oleh app.js -->
+    </div>
+
+    <!-- Fixed Bottom Chat Input Bar -->
+    <div class="ai-tutor-input-bar">
+      <div class="ai-input-container">
+        <textarea id="ai-tutor-user-input" class="ai-tutor-textarea" placeholder="Tanya soal atau ketik langkah jawabanmu..." rows="1"></textarea>
+        <button class="ai-tutor-send-btn" id="btn-ai-tutor-send" title="Kirim Pesan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Home Indicator Bar Khusus Layar AI Tutor -->
+    <div class="phone-home-indicator-bar" style="background: var(--bg-card); border-top: none;">
+      <div class="phone-home-pill"></div>
+    </div>
+  </div>
+
+  <!-- Modal Konfirmasi Keluar Kuis -->
+  <div class="modal-overlay" id="modal-confirm-exit-quiz">
+    <div class="modal-sheet" style="max-width: 360px;">
+      <div class="modal-sheet-handle"></div>
+      <div style="text-align: center; padding: 10px 6px;">
+        <div style="font-size: 42px; margin-bottom: 10px;">⚠️</div>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Keluar dari Kuis?</h3>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px;">
+          Progres kuis saat ini belum selesai. Jika Anda keluar sekarang, tugas ini belum ditandai selesai dan nilai belum tersimpan.
+        </p>
+        <div style="display: flex; gap: 10px;">
+          <button class="filter-chip" id="btn-cancel-exit-quiz" style="flex: 1; padding: 12px; font-size: 13px; font-weight: 700;">
+            Lanjutkan Kuis
+          </button>
+          <button class="continue-btn" id="btn-confirm-exit-quiz" style="flex: 1; padding: 12px; font-size: 13px; background: var(--danger); border-color: var(--danger);">
+            Ya, Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 7: STREAK HUB (SISTEM RUNTUNAN BELAJAR HARIAN)
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-streak-hub">
+    <div class="modal-sheet" style="max-height: 88vh;">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 22px;">🔥</span>
+          <h3 class="modal-title">Runtunan Belajar (Streak Hub)</h3>
+        </div>
+        <button class="streak-circle-close-btn" data-close="modal-streak-hub" title="Keluar / Tutup" aria-label="Tutup">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Konten Dinamis Streak Hub -->
+      <div id="streak-hub-content" style="display: flex; flex-direction: column; gap: 14px; padding-bottom: 8px;">
+        <!-- Render dinamis oleh renderStreakHub() -->
+      </div>
+    </div>
+  </div>
+
+      </div> <!-- End .app-wrapper -->
+    </div> <!-- End .smartphone-screen -->
+  </div> <!-- End .smartphone-frame -->
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
