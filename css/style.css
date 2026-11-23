@@ -3176,7 +3176,7 @@ body {
   .app-wrapper {
     display: grid;
     grid-template-columns: 240px 1fr;
-    grid-template-rows: 68px 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
       "sidebar header"
       "sidebar main";
@@ -3187,6 +3187,10 @@ body {
   /* Header di kanan atas */
   .app-header {
     grid-area: header;
+    position: relative;
+    z-index: 10;
+    height: auto;
+    min-height: 64px;
     padding: 14px 32px;
     border-bottom: 1px solid var(--border-color);
     background: var(--bg-card);
