@@ -22,9 +22,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ==========================================================================
+  // SISTEM AKUN SISWA (MULTI-AKUN, DAFTAR, MASUK, & GANTI AKUN)
+  // ==========================================================================
+  const ACCOUNTS_STORAGE_KEY = "edusmart_accounts";
+  const ACTIVE_ACCOUNT_KEY = "edusmart_active_account_id";
+
+  const loadAccounts = () => {
+    let accounts = null;
+    try {
+      accounts = JSON.parse(localStorage.getItem(ACCOUNTS_STORAGE_KEY));
+    } catch (e) {
+      accounts = null;
+    }
+    if (!Array.isArray(accounts) || accounts.length === 0) {
+      accounts = [{
+        id: "default_ahmad",
+        ...initialData.user,
+        password: initialData.user.password || "edusmart123"
+      }];
+      localStorage.setItem(ACCOUNTS_STORAGE_KEY, JSON.stringify(accounts));
+    }
+    return accounts;
+  };
+
+  const saveAccounts = (accounts) => {
+    localStorage.setItem(ACCOUNTS_STORAGE_KEY, JSON.stringify(accounts));
+  };
+
+  let accountsList = loadAccounts();
+  let activeAccountId = localStorage.getItem(ACTIVE_ACCOUNT_KEY) || accountsList[0].id;
+  let activeAccount = accountsList.find(a => a.id === activeAccountId) || accountsList[0];
+  localStorage.setItem(ACTIVE_ACCOUNT_KEY, activeAccount.id);
+
   // 1. Inisialisasi State Aplikasi
   let appState = {
-    user: { ...initialData.user },
+    user: { ...activeAccount },
     quotes: [...initialData.quotes],
     quoteIndex: 0,
     currentTab: "view-home",
@@ -411,6 +444,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = appState.user;
     document.getElementById("header-user-name").textContent = user.nama;
     document.getElementById("greeting-name").textContent = user.nama;
+    const headerAvatar = document.getElementById("header-avatar");
+    if (headerAvatar && user.avatar) headerAvatar.src = user.avatar;
+    const profileAvatar = document.getElementById("profile-avatar-img");
+    if (profileAvatar && user.avatar) profileAvatar.src = user.avatar;
+    const sidebarAvatar = document.getElementById("sidebar-user-avatar");
+    if (sidebarAvatar && user.avatar) sidebarAvatar.src = user.avatar;
+    const sidebarName = document.getElementById("sidebar-user-name");
+    if (sidebarName) sidebarName.textContent = user.nama;
+    const sidebarSub = document.getElementById("sidebar-user-sub");
+    if (sidebarSub) sidebarSub.textContent = Siswa Aktif • Kelas ${user.kelas} SMP;
     document.getElementById("greeting-kelas").textContent = user.kelas;
     document.getElementById("greeting-detail-lain").textContent = user.detailLain;
 
@@ -1254,9 +1297,181 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.remove("active");
   });
 
+  const authModal = document.getElementById("modal-auth");
+  const authFeedback = document.getElementById("auth-feedback");
+  const formRegister = document.getElementById("form-register");
+  const formLogin = document.getElementById("form-login");
+  const authAccountsPanel = document.getElementById("auth-accounts-panel");
+  const authAccountsListEl = document.getElementById("auth-accounts-list");
+
+  const showAuthFeedback = (msg, type = "error") => {
+    if (!authFeedback) return;
+    authFeedback.textContent = msg;
+    authFeedback.className = uth-feedback ${type};
+    authFeedback.style.display = "block";
+  };
+
+  const clearAuthFeedback = () => {
+    if (authFeedback) authFeedback.style.display = "none";
+  };
+
+  const applyActiveAccount = (account) => {
+    activeAccount = account;
+    appState.user = { ...account };
+    localStorage.setItem(ACTIVE_ACCOUNT_KEY, account.id);
+    renderHeader();
+    renderAccountsList();
+  };
+
+  const renderAccountsList = () => {
+    if (!authAccountsListEl) return;
+    accountsList = loadAccounts();
+    authAccountsListEl.innerHTML = accountsList.map(acc => {
+      const isCurrent = acc.id === activeAccount.id;
+      return 
+        <div class="auth-account-item ${isCurrent ? "active" : ""}">
+          <div class="auth-account-info">
+            <img src="${acc.avatar}" alt="Avatar" class="auth-account-avatar">
+            <div class="auth-account-meta">
+              <div class="auth-account-name">${acc.nama} ${isCurrent ? "(Aktif)" : ""}</div>
+              <div class="auth-account-sub">Kelas ${acc.kelas} • ${acc.email}</div>
+            </div>
+          </div>
+          <div class="auth-account-actions">
+            ${!isCurrent ? <button type="button" class="auth-use-btn" data-switch-id="${acc.id}">Pakai</button> : ""}
+            ${accountsList.length > 1 && !isCurrent ? <button type="button" class="auth-del-btn" data-delete-id="${acc.id}" title="Hapus Akun">✕</button> : ""}
+          </div>
+        </div>
+      ;
+    }).join("");
+
+    authAccountsListEl.querySelectorAll("[data-switch-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = accountsList.find(a => a.id === btn.dataset.switchId);
+        if (target) {
+          applyActiveAccount(target);
+          authModal.classList.remove("active");
+        }
+      });
+    });
+
+    authAccountsListEl.querySelectorAll("[data-delete-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        accountsList = accountsList.filter(a => a.id !== btn.dataset.deleteId);
+        saveAccounts(accountsList);
+        renderAccountsList();
+      });
+    });
+  };
+
+  const switchAuthTab = (tabName) => {
+    clearAuthFeedback();
+    document.querySelectorAll("[data-auth-tab]").forEach(b => {
+      b.classList.toggle("active", b.dataset.authTab === tabName);
+    });
+    if (formRegister) formRegister.style.display = tabName === "register" ? "flex" : "none";
+    if (formLogin) formLogin.style.display = tabName === "login" ? "flex" : "none";
+    if (authAccountsPanel) authAccountsPanel.style.display = tabName === "accounts" ? "block" : "none";
+    if (tabName === "accounts") renderAccountsList();
+  };
+
+  const openAuthModal = (defaultTab = "register") => {
+    switchAuthTab(defaultTab);
+    if (authModal) authModal.classList.add("active");
+  };
+
+  document.querySelectorAll("[data-auth-tab]").forEach(btn => {
+    btn.addEventListener("click", () => switchAuthTab(btn.dataset.authTab));
+  });
+
+  const btnOpenAuth = document.getElementById("btn-open-auth");
+  if (btnOpenAuth) {
+    btnOpenAuth.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      openAuthModal("register");
+    });
+  }
+
+  const btnProfileAuth = document.getElementById("btn-profile-auth");
+  if (btnProfileAuth) {
+    btnProfileAuth.addEventListener("click", () => openAuthModal("register"));
+  }
+
+  if (formRegister) {
+    formRegister.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = document.getElementById("reg-nama").value.trim();
+      const kelas = document.getElementById("reg-kelas").value.trim() || "9B";
+      const nisnInput = document.getElementById("reg-nisn").value.trim();
+      const email = document.getElementById("reg-email").value.trim().toLowerCase();
+      const noHp = document.getElementById("reg-hp").value.trim() || "-";
+      const password = document.getElementById("reg-password").value;
+
+      if (!nama || !email || password.length < 4) {
+        showAuthFeedback("Mohon isi nama, email valid, dan kata sandi min. 4 karakter.", "error");
+        return;
+      }
+
+      accountsList = loadAccounts();
+      if (accountsList.some(a => a.email.toLowerCase() === email)) {
+        showAuthFeedback("Email sudah terdaftar. Silakan masuk atau gunakan email lain.", "error");
+        return;
+      }
+
+      const newAccount = {
+        id: "acc_" + Date.now(),
+        nama,
+        kelas,
+        detailLain: initialData.user.detailLain || "Semester Ganjil 2024/2025",
+        nisn: nisnInput || String(Math.floor(1000000000 + Math.random() * 9000000000)),
+        sekolah: initialData.user.sekolah,
+        email,
+        noHp,
+        password,
+        avatar: https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=16A34A&color=fff&size=150,
+        streakHari: 1,
+        targetHarianPersen: 0,
+        targetHarianTeks: "0 dari 4 materi selesai",
+        waktuBelajarHariIni: "0j 0m",
+        poin: 0,
+        peringkatKelas: accountsList.length + 1
+      };
+
+      accountsList.push(newAccount);
+      saveAccounts(accountsList);
+      applyActiveAccount(newAccount);
+      formRegister.reset();
+      document.getElementById("reg-kelas").value = "9B";
+      authModal.classList.remove("active");
+    });
+  }
+
+  if (formLogin) {
+    formLogin.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const identifier = document.getElementById("login-identifier").value.trim().toLowerCase();
+      const password = document.getElementById("login-password").value;
+
+      accountsList = loadAccounts();
+      const matched = accountsList.find(a =>
+        (a.email.toLowerCase() === identifier || a.nisn === identifier) && a.password === password
+      );
+
+      if (!matched) {
+        showAuthFeedback("Email/NISN atau kata sandi salah.", "error");
+        return;
+      }
+
+      applyActiveAccount(matched);
+      formLogin.reset();
+      authModal.classList.remove("active");
+    });
+  }
+
   document.getElementById("btn-logout").addEventListener("click", () => {
-    if (confirm("Apakah Anda yakin ingin keluar dari akun?")) {
-      alert("Anda telah keluar. Silakan login kembali nanti.");
+    if (confirm("Apakah Anda yakin ingin keluar atau ganti akun?")) {
+      sidebar.classList.remove("active");
+      openAuthModal("login");
     }
   });
 
