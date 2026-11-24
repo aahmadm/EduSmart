@@ -1,11 +1,11 @@
 // Data dummy dan state awal untuk Aplikasi Belajar - Jenjang SMP (Sekolah Menengah Pertama)
 const initialData = {
   user: {
-    nama: "Ahmad Rayhan",
+    nama: "Ahmad Mubarak",
     kelas: "9B",
     detailLain: "Semester Ganjil 2024/2025",
     nisn: "0098943211",
-    sekolah: "SMP Negeri 1 Prestasi Bangsa",
+    sekolah: "SMPIT Al-Irsyad Al-Islamiyyah Bandung",
     email: "rayhan.ahmad@smp.belajar.sch.id",
     noHp: "0812-3456-7890",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
