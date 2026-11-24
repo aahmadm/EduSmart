@@ -453,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarName = document.getElementById("sidebar-user-name");
     if (sidebarName) sidebarName.textContent = user.nama;
     const sidebarSub = document.getElementById("sidebar-user-sub");
-    if (sidebarSub) sidebarSub.textContent = Siswa Aktif • Kelas ${user.kelas} SMP;
+    if (sidebarSub) sidebarSub.textContent = `Siswa Aktif • Kelas ${user.kelas} SMP`;
     document.getElementById("greeting-kelas").textContent = user.kelas;
     document.getElementById("greeting-detail-lain").textContent = user.detailLain;
 
@@ -1307,7 +1307,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const showAuthFeedback = (msg, type = "error") => {
     if (!authFeedback) return;
     authFeedback.textContent = msg;
-    authFeedback.className = uth-feedback ${type};
+    authFeedback.className = `auth-feedback ${type}`;
     authFeedback.style.display = "block";
   };
 
@@ -1328,7 +1328,7 @@ document.addEventListener("DOMContentLoaded", () => {
     accountsList = loadAccounts();
     authAccountsListEl.innerHTML = accountsList.map(acc => {
       const isCurrent = acc.id === activeAccount.id;
-      return 
+      return `
         <div class="auth-account-item ${isCurrent ? "active" : ""}">
           <div class="auth-account-info">
             <img src="${acc.avatar}" alt="Avatar" class="auth-account-avatar">
@@ -1338,11 +1338,11 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           </div>
           <div class="auth-account-actions">
-            ${!isCurrent ? <button type="button" class="auth-use-btn" data-switch-id="${acc.id}">Pakai</button> : ""}
-            ${accountsList.length > 1 && !isCurrent ? <button type="button" class="auth-del-btn" data-delete-id="${acc.id}" title="Hapus Akun">✕</button> : ""}
+            ${!isCurrent ? `<button type="button" class="auth-use-btn" data-switch-id="${acc.id}">Pakai</button>` : ""}
+            ${accountsList.length > 1 && !isCurrent ? `<button type="button" class="auth-del-btn" data-delete-id="${acc.id}" title="Hapus Akun">✕</button>` : ""}
           </div>
         </div>
-      ;
+      `;
     }).join("");
 
     authAccountsListEl.querySelectorAll("[data-switch-id]").forEach(btn => {
@@ -1428,7 +1428,7 @@ document.addEventListener("DOMContentLoaded", () => {
         email,
         noHp,
         password,
-        avatar: https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=16A34A&color=fff&size=150,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=16A34A&color=fff&size=150`,
         streakHari: 1,
         targetHarianPersen: 0,
         targetHarianTeks: "0 dari 4 materi selesai",
