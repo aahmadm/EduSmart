@@ -368,6 +368,11 @@
             </div>
           </div>
         </div>
+
+        <button class="profile-switch-account-btn" id="btn-profile-auth">
+          <span>👤</span>
+          <span>Daftar Akun Baru / Ganti Akun</span>
+        </button>
       </section>
 
     </main>
@@ -458,14 +463,18 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-card-subtle); border-radius: var(--radius-md);">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" style="width: 44px; height: 44px; border-radius: 50%;">
+          <img id="sidebar-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
           <div>
-            <div style="font-weight: 700; font-size: 14px;">Ahmad Rayhan</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Siswa Aktif • Kelas 9B SMP</div>
+            <div id="sidebar-user-name" style="font-weight: 700; font-size: 14px;">Ahmad Rayhan</div>
+            <div id="sidebar-user-sub" style="font-size: 11px; color: var(--text-muted);">Siswa Aktif • Kelas 9B SMP</div>
           </div>
         </div>
 
         <nav class="sidebar-menu-list">
+          <div class="sidebar-item" id="btn-open-auth">
+            <span>👤</span>
+            <span>Daftar / Ganti Akun</span>
+          </div>
           <div class="sidebar-item" id="btn-toggle-theme">
             <span>🌓</span>
             <span style="flex: 1;">Mode Gelap / Terang</span>
@@ -564,6 +573,78 @@
       </div>
       <div id="interactive-content" style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;">
         <!-- Konten interaktif diisi dinamis -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 6: AKUN SISWA (DAFTAR / MASUK / GANTI AKUN)
+       ========================================================== -->
+  <div class="modal-overlay" id="modal-auth">
+    <div class="modal-sheet">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <h3 class="modal-title" id="auth-modal-title">Akun Siswa EduSmart</h3>
+        <button class="modal-close-btn" data-close="modal-auth">✕</button>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" data-auth-tab="register">Daftar Baru</button>
+        <button type="button" class="auth-tab-btn" data-auth-tab="login">Masuk</button>
+        <button type="button" class="auth-tab-btn" data-auth-tab="accounts">Akun Tersimpan</button>
+      </div>
+
+      <div id="auth-feedback" class="auth-feedback" style="display: none;"></div>
+
+      <!-- Form Daftar Akun Baru -->
+      <form id="form-register" class="auth-form">
+        <div class="auth-field">
+          <label for="reg-nama">Nama Lengkap *</label>
+          <input type="text" id="reg-nama" class="auth-input" placeholder="Contoh: Siti Aisyah" required>
+        </div>
+        <div class="auth-row-2">
+          <div class="auth-field">
+            <label for="reg-kelas">Kelas *</label>
+            <input type="text" id="reg-kelas" class="auth-input" placeholder="Contoh: 9B" value="9B" required>
+          </div>
+          <div class="auth-field">
+            <label for="reg-nisn">NISN</label>
+            <input type="text" id="reg-nisn" class="auth-input" placeholder="Opsional (10 digit)">
+          </div>
+        </div>
+        <div class="auth-field">
+          <label for="reg-email">Email Siswa *</label>
+          <input type="email" id="reg-email" class="auth-input" placeholder="nama@smp.belajar.sch.id" required>
+        </div>
+        <div class="auth-row-2">
+          <div class="auth-field">
+            <label for="reg-hp">No. HP / WA</label>
+            <input type="text" id="reg-hp" class="auth-input" placeholder="0812-xxxx-xxxx">
+          </div>
+          <div class="auth-field">
+            <label for="reg-password">Kata Sandi *</label>
+            <input type="password" id="reg-password" class="auth-input" placeholder="Min. 4 karakter" minlength="4" required>
+          </div>
+        </div>
+        <button type="submit" class="auth-submit-btn">Buat &amp; Masuk ke Akun</button>
+      </form>
+
+      <!-- Form Masuk (Login) -->
+      <form id="form-login" class="auth-form" style="display: none;">
+        <div class="auth-field">
+          <label for="login-identifier">Email atau NISN *</label>
+          <input type="text" id="login-identifier" class="auth-input" placeholder="Masukkan email atau NISN" required>
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Kata Sandi *</label>
+          <input type="password" id="login-password" class="auth-input" placeholder="Masukkan kata sandi" required>
+        </div>
+        <button type="submit" class="auth-submit-btn">Masuk</button>
+      </form>
+
+      <!-- Daftar Akun Tersimpan -->
+      <div id="auth-accounts-panel" class="auth-accounts-panel" style="display: none;">
+        <div id="auth-accounts-list" class="auth-accounts-list"></div>
       </div>
     </div>
   </div>
